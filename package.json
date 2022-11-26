@@ -1,12 +1,12 @@
 {
-  "name": "y",
+  "name": "backg13",
   "version": "1.0.0",
-  "description": "Proyecto G13",
+  "description": "Proyecto G13 ",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js"
   },
-  "author": "Sebastian Ardla",
+  "author": "Grupo G13",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
