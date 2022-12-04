@@ -1,12 +1,12 @@
 const Categoria = require("../models/categoria");
 
-// req es lo que podemos leer desde Postman
-// res es lo que enviamos hacia Postman
+//req es lo que podemos leer desde postman
+// res el lo que enviamos hacia postman
 
 exports.leerCategoria = async ( req, res ) => {
     try{
         const categoria = await Categoria.find({ creador: req.usuario.id});
-        res.json({categoria});
+        res.json({ categoria });
     }catch(error){
         console.log(error);
     }
@@ -15,10 +15,10 @@ exports.leerCategoria = async ( req, res ) => {
 }
 exports.crearCategoria = async ( req, res ) => {
     try{
-        const categoria = new Categoria(req.body); 
+        const categoria = new Categoria(req.body);
 
         categoria.creador = req.usuario.id;
-        
+
         categoria.save();
 
         res.json(categoria);
@@ -26,26 +26,25 @@ exports.crearCategoria = async ( req, res ) => {
         console.log(error);
     }
 
-
 };
-
 exports.actualizarCategoria = async ( req, res ) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const categoria = await Categoria.findById(id);
 
     if(!categoria){
-        return res.status(400).json({msg: "categoria no encontrada"});
+        return res.status(400).json({msg:"categoria no encontrada"});
     }
 
     if(categoria.creador.toString() !== req.usuario.id.toString()){
-        return res.status(400).json({msg: "acción no valida para este usuario"});
+        return res.status(400).json({ msg: "acción no valida para este usuario"});
     }
 
     categoria.nombre = req.body.nombre || categoria.nombre;
-    
+
     categoria.save();
-    res.json({categoria});
+    res.json({ categoria});
+
 
 
 }

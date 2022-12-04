@@ -1,14 +1,14 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
-const categoriaController = require("../controllers/categoriaController.js")
+const authMiddleware = require("../middleware/authMiddleware");
+const categoriaController = require("../controllers/categoriaController");
 
-router.get("/", authMiddleware, categoriaController.leerCategoria);
+router.get("/",authMiddleware, categoriaController.leerCategoria);
 
-router.post("/", authMiddleware, categoriaController.crearCategoria)   
+router.post("/",authMiddleware, categoriaController.crearCategoria  )
 
-router.put("/:id", authMiddleware, categoriaController.actualizarCategoria)
-    
-router.delete("/:id", authMiddleware, categoriaController.borrarCategoria)
-    
+router.put("/:id", authMiddleware, categoriaController.actualizarCategoria )
+
+router.delete("/:id",authMiddleware, categoriaController.borrarCategoria )
+
 module.exports = router;
