@@ -1,12 +1,12 @@
 {
-  "name": "backg13",
+  "name": "clase4back",
   "version": "1.0.0",
-  "description": "Proyecto G13 ",
+  "description": "Proyecto G13",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js"
   },
-  "author": "Grupo G13",
+  "author": "G13",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,57 +1,61 @@
-const Usuario = require("../models/usuario");
+const User = require("../models/user")
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-require("dotenv").config({ path: "variables.env"});
+require("dotenv").config({ path: "variables.env" });
 
-exports.autenticarUsuario = async (req, res) => {
-    const { password, email } = req.body; 
+exports.authenticateUser = async (req, res) => {
 
-    try{
-         // revisar que el correo este registrado
-         let usuario = await Usuario.findOne({ email });
+    const { password, email } = req.body;
+    try {
 
-         if (!usuario){
-             return res.status(400).json({ msg : "el usuario no existe"});
-         }
+        //validar que el correo este registrado
+        let user = await User.findOne({ email });
 
-         //validar el password
-         const passwordCorrecto = await bcryptjs.compare(password, usuario.password);
+        if (!user) {
+            return res.status(400).json({ msg: "El usuario no existe" });
+        }
 
-         if (!passwordCorrecto){
-            return res.status(404).json({msg: "password incorrecto"});
-         }
+        //validar el password
+        const passwordCorrect = await bcryptjs.compare(password, user.password);
 
-         // si todo es correcto: crear y firmar un token
+        if (!passwordCorrect) {
 
-         let payload = {
-            usuario: {id : usuario.id},
-         };
-         //res.json(payload);
-          jwt.sign(
+            return res.status(404).json({ msg: "Password incorrecto" });
+        }
+
+        //si todo es correcto: crear y firmar token
+        let payload = {
+            user: { id: user.id },
+        };
+        //res.json(payload);
+        jwt.sign(
             payload,
-            process.env.SECRETA,
-            {
-                expiresIn: '30d', //1 minuto
-            },
-            (error, token) =>{
+            process.env.SECRETA, {
+
+            expiresIn: '30d',// 30 ias
+        },
+            (error, token) => {
+
                 if (error) throw error;
-                // mensaje de confirmación
-                res.json({token});
+                //mensaje de confirmacion
+                res.json({ token });
             }
+        );
 
-          );
+       // console.log("Permitir ingresar");
+    } catch (error) {
 
-
-    }catch(error){
         console.log(error);
     }
 }
 
-exports.usuarioAutenticado = async ( req, res) =>{
-    try{
-        const usuario = await Usuario.findById(req.usuario.id);
-        res.json({ usuario});
-    }catch(error){
-        res.status(403).json({ msg: "Hubo un error"});
+exports.authUser = async (req, res) => {
+
+    try {
+        const user = await User.findById(req.user.id);
+        res.json({ user });
+
+    } catch (error) {
+        res.status(403).json({ msg: "hubo un error" })
     }
 }

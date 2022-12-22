@@ -1,23 +1,28 @@
 const jwt = require("jsonwebtoken");
+const router = require("../routers/authRouters");
 
-module.exports = function ( req, res, next){
-    //leer el token desde header de postman
+/* validacion  a traves de token 
+        - lectura de token
+        - verificacion de existencia de token
+        - validar token
+*/
+module.exports = function (req, res, next) {
+    //leer el token desde el header
     const token = req.header("x-auth-token");
     //console.log(token);
 
-    // revisar si hay token o no
-    if(!token){
-        return res.status(400).json({ msg:"No hay Token"});
+    //revisar si  el token existe o no
+    if (!token) {
+        return res.status(400).json({ msg: "No hay token" })
     }
 
-    // validar token
-
-    try{
+    //validar token
+    try {
         const cifrado = jwt.verify(token, process.env.SECRETA)
-        req.usuario = cifrado.usuario;
-        //console.log(cifrado.usuario);
+        req.user = cifrado.user;
+        // console.log(cifrado.user);
         next();
-    }catch(error){
-        res.status(400).json({msg:"Token no valido "})
+    } catch (error) {
+        res.status(400).json({ msg: "Token no valido" })
     }
 }
